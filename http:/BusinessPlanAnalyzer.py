@@ -2,15 +2,15 @@ import streamlit as st
 import openai
 import os
 
-# گرفتن کلید API از فایل secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# استفاده از نسخه جدید OpenAI SDK
+client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def analyze_idea(text):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # یا "gpt-4" اگه دسترسی داری
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",  # یا gpt-4 اگر دسترسی داری
         messages=[
             {"role": "system", "content": "شما یک تحلیل‌گر حرفه‌ای طرح‌های سرمایه‌گذاری هستید."},
-            {"role": "user", "content": f"طرح سرمایه‌گذاری من اینه:\n{text}\nلطفاً یک تحلیل کامل انجام بده."}
+            {"role": "user", "content": f"طرح سرمایه‌گذاری من:\n{text}\nلطفاً یک تحلیل کامل انجام بده."}
         ],
         temperature=0.7
     )
