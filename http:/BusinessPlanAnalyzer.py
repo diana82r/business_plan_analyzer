@@ -1,28 +1,28 @@
 import streamlit as st
 import openai
+import os
 
-st.title("تحلیل‌گر هوشمند طرح سرمایه‌گذاری")
-
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# تنظیم کلید API از محیط (از طریق Secrets در Streamlit Cloud)
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def analyze_idea(text):
-    response = openai.chat.completions.create(
-        model="gpt-4",
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",  # یا "gpt-4" اگه بهش دسترسی داری
         messages=[
-{"role": "system", "content": "تو یک مشاور مالی حرفه‌ای هستی. طرح‌های سرمایه‌گذاری را دقیق تحلیل کن."},
-            {"role": "user", "content": f"این طرح را تحلیل کن:\n{text}"}
+            {"role": "system", "content": "تو یک تحلیل‌گر مالی حرفه‌ای هستی."},
+            {"role": "user", "content": text}
         ],
-        temperature=0.7,
+        temperature=0.7
     )
     return response.choices[0].message.content
 
-user_input = st.text_area("خلاصه طرح سرمایه‌گذاری خود را وارد کنید")
+# رابط کاربری
+st.title("💼 تحلیل‌گر هوشمند طرح سرمایه‌گذاری")
+user_input = st.text_area("خلاصه طرح سرمایه‌گذاری خود را وارد کنید:")
 
 if st.button("تحلیل ایده"):
-    if not user_input.strip():
-        st.warning("لطفاً خلاصه طرح را وارد کنید.")
-else:
-        with st.spinner("در حال تحلیل..."):
-            result = analyze_idea(user_input)
-            st.success("نتیجه تحلیل:")
-            st.write(result)
+    if user_input.strip():
+        result = analyze_idea(user_input)
+        st.success(result)
+    else:
+        st.warning("لطفاً یک متن وارد کنید.")
