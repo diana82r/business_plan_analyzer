@@ -1,3 +1,6 @@
+def analyze_idea(text):
+    return "🔍 تحلیل تستی برای ایده:\n" +
+
 import streamlit as st
 
 st.title("تحلیل‌گر طرح سرمایه‌گذاری")
