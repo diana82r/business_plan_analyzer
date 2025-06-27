@@ -14,3 +14,4 @@ if st.button("تحلیل ایده"):
         result = analyze_idea(user_input)  # فرض می‌کنیم این تابع تحلیل داره
         st.write("نتایج تحلیل:")
         st.write(result)
+
